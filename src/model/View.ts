@@ -36,8 +36,7 @@ export abstract class View {
 
   onRender(): void { }
 
-  build(): void {
-    this.parent.innerHTML = '';
+  render(): void {
     const templateElement = document.createElement('template');
     templateElement.innerHTML = this.template();
     this.bindEvents(templateElement.content);

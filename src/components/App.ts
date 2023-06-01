@@ -1,22 +1,33 @@
 import { View } from '../model/View';
+import { Choice } from './Choice';
 
 export class App extends View {
   choices = ['rock', 'paper', 'scissors'];
   playerChoice = '';
   botChoice = '';
 
-  eventsMap(): { [key: string]: () => void; } {
+  regionsMap(): { [key: string]: string; } {
     return {
-      'click:.choice': (e?: Event) => { }
+      playerOne: '.player-one',
+      playerTwo: '.player-two'
     };
   }
 
-  renderSelections = (): string[] => {
+  eventsMap(): { [key: string]: () => void; } {
+    return {
+      'click:.choice': (e?: any) => {
+        this.regions.playerOne.innerHTML = e.target.innerText;
+        this.regions.playerTwo.innerHTML = this.choices[Math.floor(Math.random() * this.choices.length)];
+      }
+    };
+  }
+
+  renderChoices = (): string[] => {
     return this.choices.map((choice: string) => {
       return `
-        <div class='choice'>
+        <button class='choice'>
           ${choice}
-        </div>
+        </button>
       `;
     });
   };
@@ -29,7 +40,7 @@ export class App extends View {
           <div class='player-two'></div>
         </div>
         <div class='choices'>
-          ${this.renderSelections().join('')}
+          ${this.renderChoices().join('')}
         </div>
       </div>
     `;
