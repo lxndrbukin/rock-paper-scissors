@@ -1,5 +1,8 @@
+import { Eventing } from './Eventing';
+
 export abstract class View {
   regions: { [key: string]: Element; } = {};
+
   constructor(public parent: Element) {
   }
 
@@ -37,8 +40,9 @@ export abstract class View {
   onRender(): void { }
 
   render(): void {
+    this.parent.innerHTML = '';
     const templateElement = document.createElement('template');
-    templateElement.innerHTML = this.template();
+    templateElement.innerHTML += this.template();
     this.bindEvents(templateElement.content);
     this.mapRegions(templateElement.content);
     this.onRender();
