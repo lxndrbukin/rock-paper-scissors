@@ -10,7 +10,7 @@ export class Player extends View {
       <div class='player-data'>
         <h5>Player ${this.playerNum}</h5>
         <span class='player-choice'>
-          ${this.choice}
+          <i class='fa-solid fa-hand-${this.choice}'></i>
         </span>
       </div>
     `;

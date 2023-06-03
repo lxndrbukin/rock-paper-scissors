@@ -1,5 +1,3 @@
-import { Eventing } from './Eventing';
-
 export abstract class View {
   regions: { [key: string]: Element; } = {};
 

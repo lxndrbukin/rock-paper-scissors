@@ -1,9 +1,11 @@
 import { View } from '../model/View';
 import { Player } from './Player';
 import { Message } from './Message';
+import { Choices, Combinations } from './types';
+
 
 export class App extends View {
-  choices: string[] = ['Rock', 'Paper', 'Scissors'];
+  choices: string[] = [Choices.Rock, Choices.Paper, Choices.Scissors];
   playerChoice: string = '';
   computerChoice: string = '';
 
@@ -16,10 +18,10 @@ export class App extends View {
     };
   }
 
-  eventsMap(): { [key: string]: (e?: Event) => void; } {
+  eventsMap(): { [key: string]: (e?: any) => void; } {
     return {
       'click:.choice': (e: any) => {
-        this.playerChoice = e.target.value;
+        this.playerChoice = e.target.name;
         this.computerChoice = this.choices[Math.floor(Math.random() * this.choices.length)];
         this.render();
       }
@@ -28,17 +30,17 @@ export class App extends View {
 
   get gameMessage(): string {
     switch (this.playerChoice + this.computerChoice) {
-      case 'PaperRock':
-      case 'RockScissors':
-      case 'ScissorsPaper':
-        return `${this.playerChoice} beat(s) ${this.computerChoice}. You win!`;
-      case 'RockPaper':
-      case 'ScissorsRock':
-      case 'PaperScissors':
-        return `${this.computerChoice} beat(s) ${this.playerChoice}. Computer wins!`;
-      case 'RockRock':
-      case 'PaperPaper':
-      case 'ScissorsScissors':
+      case Combinations.PR:
+      case Combinations.RS:
+      case Combinations.SP:
+        return `${this.playerChoice.toUpperCase()} beat(s) ${this.computerChoice.toUpperCase()}. You win!`;
+      case Combinations.RP:
+      case Combinations.SR:
+      case Combinations.PS:
+        return `${this.computerChoice.toUpperCase()} beat(s) ${this.playerChoice.toUpperCase()}. Computer wins!`;
+      case Combinations.RR:
+      case Combinations.PP:
+      case Combinations.SS:
         return `It's a tie!`;
       default:
         return 'Time to play!';
@@ -48,7 +50,9 @@ export class App extends View {
   renderChoices = (): string[] => {
     return this.choices.map((choice: string) => {
       return `
-        <input class='choice' type='button' value='${choice}' />
+        <button class='choice' name='${choice}'>
+          <i class='fa-solid fa-hand-${choice}'></i>
+        </button>
       `;
     });
   };
@@ -64,8 +68,8 @@ export class App extends View {
       <div class='board'>
         <div class='message'></div>
         <div class='players'>
-          <div class='player-one'></div>
-          <div class='player-two'></div>
+          <div class='player player-one'></div>
+          <div class='player player-two'></div>
         </div>
         <div class='choices'>
           ${this.renderChoices().join('')}
