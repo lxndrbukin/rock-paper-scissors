@@ -1,13 +1,15 @@
 import { View } from '../model/View';
 import { Player } from './Player';
 import { Message } from './Message';
-import { Choices, Combinations } from './types';
+import { Choices, Combinations, LocalStorage } from './types';
 
 
 export class App extends View {
   choices: string[] = [Choices.Rock, Choices.Paper, Choices.Scissors];
   playerChoice: string = '';
   computerChoice: string = '';
+  playerScore: number = Number(localStorage.getItem(LocalStorage.PlayerScore)) || 0;
+  computerScore: number = Number(localStorage.getItem(LocalStorage.ComputerScore)) || 0;
 
   regionsMap(): { [key: string]: string; } {
     return {
@@ -28,16 +30,20 @@ export class App extends View {
     };
   }
 
-  get gameMessage(): string {
+  get gameWin(): string {
     switch (this.playerChoice + this.computerChoice) {
       case Combinations.PR:
       case Combinations.RS:
       case Combinations.SP:
-        return `${this.playerChoice.toUpperCase()} beat(s) ${this.computerChoice.toUpperCase()}. You win!`;
+        this.playerScore = this.playerScore + 1;
+        localStorage.setItem(LocalStorage.PlayerScore, JSON.stringify(this.playerScore));
+        return `<b>${this.playerChoice}</b> beat(s) <b>${this.computerChoice}</b>. You win!`;
       case Combinations.RP:
       case Combinations.SR:
       case Combinations.PS:
-        return `${this.computerChoice.toUpperCase()} beat(s) ${this.playerChoice.toUpperCase()}. Computer wins!`;
+        this.computerScore = this.computerScore + 1;
+        localStorage.setItem(LocalStorage.ComputerScore, JSON.stringify(this.computerScore));
+        return `<b>${this.computerChoice}</b> beat(s) <b>${this.playerChoice}</b>. Computer wins!`;
       case Combinations.RR:
       case Combinations.PP:
       case Combinations.SS:
@@ -51,16 +57,16 @@ export class App extends View {
     return this.choices.map((choice: string) => {
       return `
         <button class='choice' name='${choice}'>
-          <i class='fa-solid fa-hand-${choice}'></i>
+          <i class='fa-solid fa-hand-${choice.toLowerCase()}'></i>
         </button>
       `;
     });
   };
 
   onRender(): void {
-    new Player(this.regions.playerOne, 1, this.playerChoice).render();
-    new Player(this.regions.playerTwo, 2, this.computerChoice).render();
-    new Message(this.regions.message, this.gameMessage).render();
+    new Player(this.regions.playerOne, 1, this.playerChoice, this.playerScore).render();
+    new Player(this.regions.playerTwo, 2, this.computerChoice, this.computerScore).render();
+    new Message(this.regions.message, this.gameWin).render();
   }
 
   template(): string {
@@ -72,7 +78,10 @@ export class App extends View {
           <div class='player player-two'></div>
         </div>
         <div class='choices'>
-          ${this.renderChoices().join('')}
+          <h4>Choices:</h4>
+          <div class='choice-btns'>
+            ${this.renderChoices().join('')}
+          </div>
         </div>
       </div>
     `;

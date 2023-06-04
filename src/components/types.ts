@@ -1,17 +1,22 @@
 export enum Choices {
-  Paper = 'paper',
-  Rock = 'rock',
-  Scissors = 'scissors'
+  Paper = 'Paper',
+  Rock = 'Rock',
+  Scissors = 'Scissors'
 }
 
 export enum Combinations {
-  RP = 'rockpaper',
-  PR = 'paperrock',
-  SR = 'scissorsrock',
-  RS = 'rockscissors',
-  PS = 'paperscissors',
-  SP = 'scissorspaper',
-  RR = 'rockrock',
-  PP = 'paperpaper',
-  SS = 'scissorsscissors'
+  RP = 'RockPaper',
+  PR = 'PaperRock',
+  SR = 'ScissorsRock',
+  RS = 'RockScissors',
+  PS = 'PaperScissors',
+  SP = 'ScissorsPaper',
+  RR = 'RockRock',
+  PP = 'PaperPaper',
+  SS = 'ScissorsScissors'
+}
+
+export enum LocalStorage {
+  PlayerScore = 'playerScore',
+  ComputerScore = 'computerScore'
 }
