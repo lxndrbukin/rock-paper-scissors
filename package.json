@@ -1,9 +1,11 @@
 {
   "name": "rockpaperscissersts",
   "version": "1.0.0",
-  "main": "index.js",
+  "source": "dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "parcel ./*.html",
+    "predeploy": "rm -rf dist && parcel build ./*.html --public-url \"https://lxndrbukin.github.io/rock-paper-scissors\"",
+    "deploy": "gh-pages -d dist"
   },
   "repository": {
     "type": "git",
@@ -16,5 +18,8 @@
   },
   "homepage": "https://github.com/lxndrbukin/rock-paper-scissors#readme",
   "keywords": [],
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "gh-pages": "^5.0.0"
+  }
 }
